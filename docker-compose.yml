@@ -11,7 +11,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./app:/app  # 挂载应用代码（开发模式）
+      - .:/app  # 挂载应用代码（开发模式）
     restart: unless-stopped
 
   nginx:
