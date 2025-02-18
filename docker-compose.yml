@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - FLASK_ENV=production
+      - GUNICORN_WORKERS=4
+    networks:
+      - app-network
+    volumes:
+      - ./app:/app  # 挂载应用代码（开发模式）
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.23-alpine
+    depends_on:
+      - flask-app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./flask-app.conf:/etc/nginx/conf.d/flask-app.conf
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c"
+    command: >
+      "
+      trap exit TERM; while :; do certbot renew; sleep 12h & wait $!; done;
+      "
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  certbot-etc:
+  certbot-www:
