@@ -188,9 +188,27 @@
     // 创建触发按钮
     const btn = document.createElement('button');
     btn.className = 'submit-btn';
-    btn.style = 'position: fixed; top: 20px; right: 20px; width: auto; z-index: 9998;';
+    btn.style = `
+        position: fixed;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        width: auto;
+        z-index: 9998;
+        opacity: 0.6;
+        transition: opacity 0.3s;
+    `;
     btn.textContent = '收藏';
     document.body.appendChild(btn);
+
+    // 添加鼠标悬停效果
+    btn.addEventListener('mouseenter', () => {
+        btn.style.opacity = '1';
+    });
+
+    btn.addEventListener('mouseleave', () => {
+        btn.style.opacity = '0.6';
+    });
 
     // 添加点击空白处隐藏面板的功能
     document.addEventListener('click', (event) => {
