@@ -1,0 +1,1 @@
+acme.sh --issue --dns dns_dp -d "*.dahuar.xyz" -d dahuar.xyz --key-file /etc/nginx/ssl/dahuar.xyz.key --fullchain-file /etc/nginx/ssl/dahuar.xyz.crt
