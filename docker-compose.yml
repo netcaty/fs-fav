@@ -12,6 +12,8 @@ services:
       - app-network
     volumes:
       - .:/app  # 挂载应用代码（开发模式）
+    ports:
+      - "8000:8000"
     restart: unless-stopped
 
   
