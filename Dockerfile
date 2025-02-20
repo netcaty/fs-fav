@@ -22,4 +22,4 @@ COPY . .
 EXPOSE 8000
 
 # 使用Gunicorn启动
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "${GUNICORN_WORKERS:-4}", "wsgi:app"]
+CMD gunicorn --bind 0.0.0.0:8000 --workers ${GUNICORN_WORKERS:-4} wsgi:app
