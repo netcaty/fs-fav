@@ -8,7 +8,7 @@ from lark_oapi.adapter.flask import *
 from lark_oapi.api.im.v1 import *
 
 import json
-
+import random
 # SDK 使用说明: https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/server-side-sdk/python--sdk/preparations-before-development
 # 以下示例代码默认根据文档示例值填充，如果存在代码问题，请在 API 调试台填上相关必要参数后再复制代码使用
 # 复制该 Demo 后, 需要将 "YOUR_APP_ID", "YOUR_APP_SECRET" 替换为自己应用的 APP_ID, APP_SECRET.
@@ -71,9 +71,21 @@ def add():
     # Return success response
     return jsonify({"data": 1}), 200
 
-@app.route("/hi", methods=["GET"])
-def hi():
-    return jsonify({"data": "hi"}), 200
+@app.route("/", methods=["GET"])
+def info():
+    return jsonify({
+        "application": app.name,
+        "environment": app.config.get('ENV'),
+        "debug_mode": app.debug,
+    })
+
+jokes = json.load(open("jokes.json"))
+
+@app.route("/jokes/random", methods=["GET"])
+def jokes_random():
+    joke = random.choice(jokes)
+    id = random.randint(0, 1000000)
+    return jsonify({"id": id, "joke": joke})
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)
