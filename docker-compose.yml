@@ -3,8 +3,7 @@ version: '3.8'
 services:
   flask-app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      image: docker.cnb.cool/netcat1/images/fs-fav:6f5c8b37feae2ef5c99ff155100dcec9559d5344
     environment:
       - FLASK_ENV=production
       - GUNICORN_WORKERS=4
