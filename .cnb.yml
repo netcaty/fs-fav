@@ -7,7 +7,15 @@ main: # 定义触发分支
         github_url: https://github.com/netcaty/fs-fav.git
       stages:
         - !reference [.sync-github]
-
+    - services:
+        - docker
+      stages:
+        - name: docker login
+          script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
+        - name: docker build
+          script: docker build -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT} .
+        - name: docker push
+          script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT}
 $:
   # vscode 事件：专供页面中启动远程开发用
   vscode:
