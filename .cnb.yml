@@ -1,3 +1,13 @@
+include:
+    - "https://cnb.cool/netcat1/ci-templates/-/blob/main/template.yml"
+
+main: # 定义触发分支
+  push: # 定义触发事件
+    - env:
+        github_url: https://github.com/netcaty/fs-fav.git
+      stages:
+        - !reference [.sync-github]
+
 $:
   # vscode 事件：专供页面中启动远程开发用
   vscode:
