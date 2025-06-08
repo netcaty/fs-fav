@@ -79,13 +79,6 @@ def info():
         "debug_mode": app.debug,
     })
 
-jokes = json.load(open("jokes.json"))
-
-@app.route("/jokes/random", methods=["GET"])
-def jokes_random():
-    joke = random.choice(jokes)
-    id = random.randint(0, 1000000)
-    return jsonify({"id": id, "joke": joke})
 
 if __name__ == "__main__":
-    app.run(port=8080, debug=True)
+    app.run(port=8000, debug=True)
