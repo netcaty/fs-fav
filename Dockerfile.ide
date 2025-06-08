@@ -1,5 +1,5 @@
 #帮助文档地址: https://docs.cnb.cool/zh/vscode/quick-start.html
-FROM python:3.8
+FROM python:3.12
 
 # 腾讯云软件源使用示例: https://cnb.cool/examples/mirrors/mirrors.cloud.tencent.com
 RUN pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
