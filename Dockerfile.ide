@@ -2,7 +2,7 @@
 FROM python:3.8
 
 # 腾讯云软件源使用示例: https://cnb.cool/examples/mirrors/mirrors.cloud.tencent.com
-pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
+RUN pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
 # 以及按需安装其他软件
 RUN apt-get update && apt-get install -y git
 
