@@ -3,8 +3,11 @@ FROM python:3.12
 
 # 腾讯云软件源使用示例: https://cnb.cool/examples/mirrors/mirrors.cloud.tencent.com
 RUN pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
-# 以及按需安装其他软件
-RUN apt-get update && apt-get install -y git
+
+RUN sed -Ei "s/(deb|security).debian.org/mirrors.cloud.tencent.com/g" /etc/apt/sources.list.d/debian.sources
+
+# 安装 ssh 服务，用于支持 VSCode 客户端通过 Remote-SSH 访问开发环境
+RUN apt-get update && apt-get install -y wget unzip openssh-server git
 
 # 安装 code-server 和 vscode 常用插件
 RUN curl -fsSL https://code-server.dev/install.sh | sh \
@@ -16,8 +19,16 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh \
   && code-server --install-extension eamodio.gitlens \
   && echo done
 
-# 安装 ssh 服务，用于支持 VSCode 客户端通过 Remote-SSH 访问开发环境
-RUN apt-get update && apt-get install -y wget unzip openssh-server
+RUN cat >> /root/.local/share/code-server/Machine/settings.json <<-eof
+  {
+    "codingcopilot.welcomeMessage": "never",
+    "gitlens.showWelcomeOnInstall": false,
+    "workbench.startupEditor": "none",
+    "yaml.schemas": {
+      "https://docs.cnb.cool/conf-schema-zh.json": ".cnb.yml"
+    }
+  }
+  eof
 
 # 指定字符集支持命令行输入中文（根据需要选择字符集）
 ENV LANG C.UTF-8
